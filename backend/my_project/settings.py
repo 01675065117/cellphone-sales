@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zqn*&q_5b#nt*$k!em^n*k_!1w_s8ndl+pov@qvdo(7*=d_cwj'
+SECRET_KEY = 'django-insecure-$(@3)m@0_qnfy)u=d6(*mwwz#kq_off5f^cnoj8%g1f^mup%p*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -74,9 +75,17 @@ WSGI_APPLICATION = 'my_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('MYSQL_DATABASE_DB'),
+        'USER': config('MYSQL_DATABASE_USER'),
+        'PASSWORD': config('MYSQL_DATABASE_PASSWORD'),
+        'HOST': config('MYSQL_DATABASE_HOST'),
+        'PORT': config('MYSQL_DATABASE_PORT'),
     }
 }
 
@@ -121,3 +130,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REDIS_HOST_CENTRALIZED = config("CENTRALIZED_SESSION_REDIS_HOST")
+REDIS_PORT_CENTRALIZED = int(config("CENTRALIZED_SESSION_REDIS_PORT"))
+REDIS_PASSWORD_CENTRALIZED = config("CENTRALIZED_SESSION_REDIS_PASSWORD")
+REDIS_DATABASE_CENTRALIZED = int(config("CENTRALIZED_SESSION_REDIS_DATABASE"))
+
+APP_ENVIRONMENT = config("APP_ENV")
