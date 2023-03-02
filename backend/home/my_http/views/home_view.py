@@ -22,7 +22,7 @@ class Test(ViewSet):
     def insert(self, request):
         try:
             getData = request.data
-            hasValidate = False
+            hasValidate = True
 
             result = {
                 "status": 0,
@@ -30,8 +30,8 @@ class Test(ViewSet):
                 "data": getData['name']
             }
 
-            if seriliazer.is_valid():
-                pass
+            # if seriliazer.is_valid():
+            #     pass
 
             if not hasValidate:
                 result['message'] = "faild"

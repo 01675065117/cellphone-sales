@@ -1,4 +1,4 @@
 my_project/__pycache__
 /.idea/
-./my_project/.env
+backend/my_project/.env
 /backend/my_project/__pycache__
