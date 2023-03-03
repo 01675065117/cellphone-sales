@@ -11,12 +11,12 @@ class CustomerView(ViewSet):
     def showCustomer(self, request):
         customers = Customer.objects.all()
         serializer_class = CustomerSerializer(customers, many=True)
-        results = {
-            "status": 0,
-            "message": "succes",
-            "data": serializer_class.data
-        }
-        return Response(results)
+        # results = {
+        #     "status": 0,
+        #     "message": "succes",
+        #     "data": serializer_class.data
+        # }
+        return Response(serializer_class.data)
 
     def insertCustomer(self, request):
         customer_data = json.load(request)

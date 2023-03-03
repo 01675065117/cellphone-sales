@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'home.apps.HomeConfig'
+    'home.apps.HomeConfig',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -138,4 +140,12 @@ REDIS_PORT_CENTRALIZED = int(config("CENTRALIZED_SESSION_REDIS_PORT"))
 REDIS_PASSWORD_CENTRALIZED = config("CENTRALIZED_SESSION_REDIS_PASSWORD")
 REDIS_DATABASE_CENTRALIZED = int(config("CENTRALIZED_SESSION_REDIS_DATABASE"))
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
 APP_ENVIRONMENT = config("APP_ENV")
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES':('rest_framework.renderers.JSONRenderer',)
+}
