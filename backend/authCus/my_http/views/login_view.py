@@ -6,6 +6,8 @@ from ..serializers.customer_serializer import CustomerSerializer
 from rest_framework.viewsets import ViewSet
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.hashers import make_password, check_password
+import datetime
+import jwt
 
 class LoginView(ViewSet):
     def customerLogin(self, request):
@@ -20,6 +22,13 @@ class LoginView(ViewSet):
         if not check_password(password, user.password):
             raise AuthenticationFailed('Incorrect Password')
         
+        payload = {
+            'id': user.id,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            'iat': datetime.datetime.utcnow()
+        }
+
+        token = jwt.encode()
         results = {
             'status':0,
             'message':'Success'
