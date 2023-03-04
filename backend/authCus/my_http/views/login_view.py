@@ -28,9 +28,14 @@ class LoginView(ViewSet):
             'iat': datetime.datetime.utcnow()
         }
 
-        token = jwt.encode()
-        results = {
+        token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')
+        
+        response = Response()
+        response.set_cookie(key='jwt', value=token, httponly=True)
+
+        response.data = {
             'status':0,
-            'message':'Success'
+            'message':'Success',
+            'jwt': token
         }
-        return JsonResponse(results, safe=False)
+        return response

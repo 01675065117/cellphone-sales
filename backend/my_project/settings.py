@@ -154,3 +154,6 @@ REST_FRAMEWORK = {
 PASSWORD_HASHERS = [
   'django.contrib.auth.hashers.SHA1PasswordHasher',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
