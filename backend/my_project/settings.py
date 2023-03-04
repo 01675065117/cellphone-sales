@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'home.apps.HomeConfig',
+    'authCus.apps.AuthCusConfig',
     'corsheaders'
 ]
 
@@ -149,3 +150,7 @@ APP_ENVIRONMENT = config("APP_ENV")
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES':('rest_framework.renderers.JSONRenderer',)
 }
+
+PASSWORD_HASHERS = [
+  'django.contrib.auth.hashers.SHA1PasswordHasher',
+]
