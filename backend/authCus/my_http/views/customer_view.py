@@ -4,57 +4,21 @@ import json
 from ..models.customer_model import Customer
 from ..serializers.customer_serializer import CustomerSerializer
 from rest_framework.viewsets import ViewSet
+import jwt
+from rest_framework.exceptions import AuthenticationFailed
 # from django.contrib.auth.hashers import make_password
 
 class CustomerView(ViewSet):
-    def showCustomer(self, request):
-        customers = Customer.objects.all()
-        serializer_class = CustomerSerializer(customers, many=True)
-        # results = {
-        #     "status": 0,
-        #     "message": "succes",
-        #     "data": serializer_class.data
-        # }
-        return Response(serializer_class.data)
-
-    def insertCustomer(self, request):
-        customer_data = json.load(request)
-        serializer_class = CustomerSerializer(data=customer_data)
-        results = {
-            "status": 0,
-            "message": "succes",
-            "data": None
-        }
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return JsonResponse(results, safe=False)
+    def authenticatedCustomer(self, request):
+        token = request.COOKIES.get('jwt')
+        if not token:
+            raise AuthenticationFailed('Unauthenticated!')
         
-        results['message'] = "failed"
-        return JsonResponse(results, safe=False)
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated!')
 
-    def updateCustomer(self, request):
-        customer_data = json.load(request)
-        customer = Customer.objects.get(id=customer_data['id'])
-        serializer_class = CustomerSerializer(customer,data=customer_data)
-        results = {
-            "status": 0,
-            "message": "succes",
-            "data": None
-        }
-        if serializer_class.is_valid():
-            serializer_class.save()
-            results['data'] = serializer_class.data
-            return JsonResponse(results, safe=False)
-        results['message'] = "failed"
-        return JsonResponse(results, safe=False)
-
-    def deleteCustomer(self, request):
-        customer_data = json.load(request)
-        customer = Customer.objects.get(id=customer_data['id'])
-        customer.delete()
-        results = {
-            "status": 0,
-            "message": "succes",
-            "data": None
-        }
-        return JsonResponse(results, safe=False)
+        customer = Customer.objects.filter(id=payload['id']).first()
+        serializer_class = CustomerSerializer(customer)
+        return Response(serializer_class.data)
