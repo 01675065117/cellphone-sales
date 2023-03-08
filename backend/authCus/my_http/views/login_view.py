@@ -12,10 +12,10 @@ import jwt
 class LoginView(ViewSet):
     def customerLogin(self, request):
         customer_data = json.load(request)
-        email = customer_data['email_address']
+        email_address = customer_data['email']
         password = customer_data['password']
 
-        user = Customer.objects.filter(email_address=email).first()
+        user = Customer.objects.filter(email_address=email_address).first()
         if user is None:
             raise AuthenticationFailed('User not found')
 

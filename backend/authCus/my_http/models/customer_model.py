@@ -12,8 +12,6 @@ class Customer(models.Model):
     email_address = models.CharField(max_length=255, unique=True)
     phone_number = models.CharField(max_length=20)
     password = models.CharField(max_length=255)
-    birth = models.DateTimeField()
-    gender = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     create_at = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField()
